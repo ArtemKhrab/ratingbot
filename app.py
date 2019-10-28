@@ -56,7 +56,6 @@ def identities(message, telephone):
         get_rating(message, student_id)
     else:
         bot.send_message(message.from_user.id, 'Некорректно введен код')
-        bot.send_message(message.from_user.id, response.text)
         bot.register_next_step_handler(message, identities, telephone)
         return
 
@@ -65,7 +64,6 @@ def get_rating(message, student_id):
     semester = get_current_semester(student_id)
     message.text = int(semester)-1
     get_rating_loop(message, student_id, semester)
-    
 
 
 def get_rating_loop(message, student_id, semester):
@@ -86,7 +84,6 @@ def get_rating_loop(message, student_id, semester):
             full_response = ''
             for disciplines in response.json():
                 full_response += f'{disciplines["disciplineName"]}, {disciplines["studyTypeName"]}: {disciplines["mark"]}\n'
-            print(full_response)
             bot.send_message(message.from_user.id, full_response)
             bot.send_message(message.from_user.id, f'Если хотите посмотреть предыдущие, введите номер семестра\nВы сейчас на {max_semester}')
             bot.register_next_step_handler(message, get_rating_loop, student_id, max_semester)
@@ -104,4 +101,3 @@ def get_current_semester(student_id):
 bot.polling()
 if __name__ == '__main__':
    app.run()
-
